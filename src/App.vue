@@ -2,7 +2,7 @@
   <div id="nav">
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark p-3">
           <div class="container-fluid">
-            <a class="navbar-brand" href="#">P-LOGO</a>
+            <a class="navbar-brand text-gradient fw-bolder" href="#">P-LOGO</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
               <span class="navbar-toggler-icon"></span>
             </button>
@@ -18,11 +18,9 @@
               </ul>
               <ul class="navbar-nav ms-auto d-none d-lg-inline-flex">
                 <li class="nav-item mx-2">
-                  <router-link class="nav-link text-whit h5" to="/Login">
-                    <div class="pulse">
-                      <span class="material-symbols-outlined">
-                      login
-                      </span>
+                  <router-link class="nav-link text-whit h5 fw-bolder text-gradient" to="/Login">
+                    <div class="pulse text-gradient fw-bolder">
+                      <i class="bi bi-box-arrow-right"></i>
                     </div>
                     Login
                   </router-link>
@@ -33,14 +31,16 @@
     </nav>
   </div>
   <router-view/>
+  <Footer/>
 </template>
 
 <script>
+import Footer from "@/components/Footer.vue";
 
 export default {
   name: 'App',
   components: {
-   
+   Footer
   }
 }
 </script>
@@ -69,23 +69,9 @@ export default {
       color: rgb(236, 126, 24);
       animation: pulse 3s infinite;
   }
-  .text-whit{
-     color: rgb(236, 126, 24);
+  .bi{
+    font-size: xx-large;
   }
 
-  .pulse {
-    animation: pulse 3s infinite;
-  }
 
-  @keyframes pulse {
-    0% {
-      font-variation-settings: 'wght' 100;
-    }
-    50% {
-      font-variation-settings: 'wght' 700;
-    }
-    100% {
-      font-variation-settings: 'wght' 100;
-    }
-  }
 </style>
