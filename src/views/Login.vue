@@ -3,10 +3,10 @@
       <div class="container px-4 py-5 px-md-5 text-center text-lg-start my-5">
         <div class="row gx-lg-5 align-items-center mb-5">
           <div class="col-lg-6 mb-5 mb-lg-0" style="z-index: 10">
-            <h1 class="my-5 display-5 fw-bold ls-tight" style="color: hsl(27, 90%, 54%)">
-              LOG<span style="color: hsl(27, 64%, 89%)">IN</span>
+            <h1 class="my-5 display-5 fw-bold ls-tight" style="color: hsl(251, 85%, 49%)">
+              LOG<span style="color: hsl(266, 53%, 84%)">IN</span>
             </h1>
-            <p class="mb-4 opacity-70" style="color: hsl(218, 81%, 85%)">
+            <p class="mb-4 opacity-70" style="color: hsl(256, 44%, 71%)">
               Welcome to your Admin login page!! pleace inter your login and password
             </p>
           </div>
@@ -83,18 +83,18 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
     .background-radial-gradient {
-      background-color: hsl(34, 90%, 47%);
+      background-color: hsl(288, 90%, 47%);
       background-image: radial-gradient(650px circle at 0% 0%,
-          hsl(29, 81%, 58%) 15%,
-          hsl(34, 64%, 53%) 35%,
-          hsl(34, 64%, 41%) 75%,
-          hsl(35, 38%, 47%) 80%,
+          hsl(266, 81%, 58%) 15%,
+          hsl(281, 64%, 53%) 35%,
+          hsl(278, 23%, 9%) 75%,
+          hsl(288, 38%, 47%) 80%,
           transparent 100%),
         radial-gradient(1250px circle at 100% 100%,
-            hsl(29, 81%, 58%) 15%,
-          hsl(34, 64%, 53%) 35%,
-          hsl(34, 64%, 41%) 75%,
-          hsl(35, 38%, 47%) 80%,
+          hsl(266, 81%, 58%) 15%,
+          hsl(281, 64%, 53%) 35%,
+          hsl(278, 23%, 9%) 75%,
+          hsl(288, 38%, 47%) 80%,
           transparent 100%);
     }
 
@@ -103,7 +103,7 @@ export default {
       width: 220px;
       top: -60px;
       left: -130px;
-      background: radial-gradient(#03000e, #1e1d2e);
+      background: radial-gradient(#8d0576, #280963);
       overflow: hidden;
     }
 
@@ -113,7 +113,7 @@ export default {
       right: -110px;
       width: 300px;
       height: 300px;
-      background: radial-gradient(#03000e, #1e1d2e);
+      background: radial-gradient(#8d0576, #280963);
       overflow: hidden;
     }
 
