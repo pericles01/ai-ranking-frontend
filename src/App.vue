@@ -15,6 +15,9 @@
                 <li class="nav-item">
                   <router-link class="nav-link mx-2" :class="$route.name == 'Competition' ? 'active' : ''" aria-current="page" :to="{ name: 'Competition' }">Competition</router-link>
                 </li>
+                <li class="nav-item">
+                    <router-link class="nav-link mx-2" :class="$route.name == 'Admin' ? 'active' : ''" aria-current="page" :to="{ name: 'Admin' }">Manage Competition</router-link>
+                </li>
               </ul>
               <ul class="navbar-nav ms-auto d-none d-lg-inline-flex">
                 <li class="nav-item mx-2">
