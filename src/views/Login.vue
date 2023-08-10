@@ -17,7 +17,7 @@
 
             <div class="card bg-glass">
               <div class="card-body px-4 py-5 px-md-5">
-                <form>
+                <form action="/Admin">
                   <!-- Email input -->
                   <div class="form-outline mb-4">
                     <input type="email" id="form3Example3" class="form-control" />
@@ -121,5 +121,10 @@ export default {
       background-color: hsla(0, 0%, 100%, 0.445) !important;
       backdrop-filter: saturate(200%) blur(25px);
       border-radius: 30px;
+    }
+    .bi-person-fill{
+      color: aliceblue;
+      align-self: center;
+      width: 100;
     }
 </style>
