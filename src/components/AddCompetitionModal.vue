@@ -11,30 +11,30 @@
                     <form class="px-md-2">
 
                         <div class="form-outline mb-4">
-                            <input type="text" id="form3Example1q" placeholder="Title" name="Title" class="form-control" />
+                            <input type="text"  placeholder="Title" v-model="competition.title" class="form-control" />
                         </div>
 
                         <div class="form-outline mb-4">
                             <label for="exampleFormControlTextarea1" class="form-label">Litel description</label>
-                            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                            <textarea class="form-control"  rows="3" v-model="competition.litel_description"></textarea>
                         </div>
 
                         <div class="form-outline mb-4">
-                            <label for="exampleFormControlTextarea1" class="form-label">Long description</label>
-                            <textarea class="form-control" id="exampleFormControlTextarea1" rows="8"></textarea>
+                            <label for="exampleFormControlTextarea2" class="form-label">Long description</label>
+                            <textarea class="form-control"  rows="8" v-model="competition.long_description"></textarea>
                         </div>
 
                         <div class="form-outline mb-4">
-                            <label for="exampleFormControlTextarea1" class="form-label">Evaluation text</label>
-                            <textarea class="form-control" id="exampleFormControlTextarea1" rows="4"></textarea>
+                            <label for="exampleFormControlTextarea3" class="form-label">Evaluation text</label>
+                            <textarea class="form-control"  rows="4" v-model="competition.evaluation_text"></textarea>
                         </div>
 
                         <div class="form-outline mb-4">
-                            <input class="form-control" type="file" id="formFile" accept="file/csv, file/xls" />
+                            <input class="form-control" type="file" id="ref_file" accept="file/csv, file/xls" ref="ref_file" @change="handleFileUpload"/>
                             <label for="formFile" class="form-label">Upload your CSV file</label>
                         </div>
 
-                        <button type="submit" class="btn btn-success btn-lg mb-1">Submit</button>
+                        <button @click="createCompetition()" class="btn btn-success btn-lg mb-1">Submit</button>
 
                     </form>
                 </div>
@@ -47,10 +47,44 @@
 </template>
 
 <script>
+import axios from 'axios';
 export default {
     name: 'AddCompetitionModal',
     props: {
         msg: String
+    },
+    data() {
+        return {
+            competition: {
+                title: '',
+                litel_description: '',
+                long_description: '',
+                evaluation_text: '',
+            },
+            selectedFile: null,
+        }
+    },
+    methods: {
+        handleFileUpload(event) {
+            this.selectedFile = event.target.files[0];
+        },
+
+        createCompetition() {
+            let formData = new FormData();
+            formData.append('title', this.competition.title);
+            formData.append('litel_description', this.competition.litel_description);
+            formData.append('long_description', this.competition.long_description);
+            formData.append('evaluation_text', this.competition.evaluation_text);
+            formData.append('ref_file', this.selectedFile);
+            //console.log(formData);
+            axios.post('http://127.0.0.1:8000/api/createCompetition', formData)
+            .then(function () {
+                    console.log('SUCCESS!!');
+            })
+            .catch(function () {
+                    console.log('FAILURE!!');
+            });
+        }
     }
 }
 </script>

@@ -17,7 +17,7 @@ const routes = [
     component: Competition,
   },
   {
-    path: "/Detail",
+    path: "/Detail/:id",
     name: "Detail",
     component: Detail,
   },
