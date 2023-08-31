@@ -17,13 +17,13 @@
                             <!-- Skills Section-->
                             <section>
                                 <!-- Skillset Card-->
-                                <div class="card shadow border-0 rounded-4 mb-5">
+                                <div class="card shadow border-0 rounded-4 mb-5" v-for="competition in competitions" :key="competition">
                                     <div class="card-body p-4">
                                         <!-- Professional skills list-->
                                         <div class="mb-1">
                                             <div class="d-flex align-items-center mb-4">
                                                 <div class="feature bg-primary bg-gradient-primary-to-secondary text-white rounded-3 me-3"><i class="bi bi-trophy-fill"></i></div>
-                                                <h3 class="fw-bolder mb-0"><span class="text-gradient d-inline">Competition 1</span></h3>
+                                                <h3 class="fw-bolder mb-0"><span class="text-gradient d-inline">{{ competition.title }}</span></h3>
                                             </div>
                                             <div class="row align-items-center gx-5">
                                                 <div class="col text-center text-lg-start">
@@ -32,65 +32,14 @@
                                                         </div>
                                                     </div>
                                                 <div class="col-lg-8">
-                                                    <div>Lorem ipsum dolor sit amet consectetur adipisicing elit. Delectus laudantium, voluptatem quis repellendus eaque sit animi illo ipsam amet officiis corporis sed aliquam non voluptate corrupti excepturi maxime porro fuga.</div>
-                                                    <a class="btn btn-primary mt-3 px-3 py-2" href="/Detail">
-                                                        raed more..
-                                                    </a>
+                                                    <div>{{ competition.litel_description }}.</div>
+                        
+                                                    <router-link class="btn btn-primary mt-3 px-3 py-2" :to="{ name: 'Detail', params: { id: competition.id } }">raed more..</router-link>
                                                 </div>
                                             </div>
                                         </div>
                                         <!-- Languages list-->
                                     </div>
-                                </div>
-                                <div class="card shadow border-0 rounded-4 mb-5">
-                                        <div class="card-body p-4">
-                                            <!-- Professional skills list-->
-                                            <div class="mb-1">
-                                                <div class="d-flex align-items-center mb-4">
-                                                    <div class="feature bg-primary bg-gradient-primary-to-secondary text-white rounded-3 me-3"><i class="bi bi-trophy-fill"></i></div>
-                                                    <h3 class="fw-bolder mb-0"><span class="text-gradient d-inline">Competition 2</span></h3>
-                                                </div>
-                                                <div class="row align-items-center gx-5">
-                                                    <div class="col text-center text-lg-start">
-                                                            <div class="bg-light p-4 rounded-4">
-                                                                <img class="img-fluid" src="../assets/compet.jpg" alt="New York">
-                                                            </div>
-                                                        </div>
-                                                    <div class="col-lg-8">
-                                                        <div>Lorem ipsum dolor sit amet consectetur adipisicing elit. Delectus laudantium, voluptatem quis repellendus eaque sit animi illo ipsam amet officiis corporis sed aliquam non voluptate corrupti excepturi maxime porro fuga.</div>
-                                                        <a class="btn btn-primary mt-3 px-3 py-2" href="/Detail">
-                                                            raed more..
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <!-- Languages list-->
-                                        </div>
-                                </div>
-                                <div class="card shadow border-0 rounded-4 mb-5">
-                                            <div class="card-body p-4">
-                                                <!-- Professional skills list-->
-                                                <div class="mb-1">
-                                                    <div class="d-flex align-items-center mb-4">
-                                                        <div class="feature bg-primary bg-gradient-primary-to-secondary text-white rounded-3 me-3"><i class="bi bi-trophy-fill"></i></div>
-                                                        <h3 class="fw-bolder mb-0"><span class="text-gradient d-inline">Competition 3</span></h3>
-                                                    </div>
-                                                    <div class="row align-items-center gx-5">
-                                                        <div class="col text-center text-lg-start">
-                                                                <div class="bg-light p-4 rounded-4">
-                                                                    <img class="img-fluid" src="../assets/compet.jpg" alt="New York">
-                                                                </div>
-                                                            </div>
-                                                        <div class="col-lg-8">
-                                                            <div>Lorem ipsum dolor sit amet consectetur adipisicing elit. Delectus laudantium, voluptatem quis repellendus eaque sit animi illo ipsam amet officiis corporis sed aliquam non voluptate corrupti excepturi maxime porro fuga.</div>
-                                                            <a class="btn btn-primary mt-3 px-3 py-2" href="/Detail">
-                                                                raed more..
-                                                            </a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <!-- Languages list-->
-                                            </div>
                                 </div>
                             </section>
                         </div>
@@ -99,11 +48,23 @@
 </template>
 
 <script>
+import axios from "axios";
 
 export default {
     name: 'Competition',
     components: {
        
+    },
+    data() {
+        return {
+            competitions: null
+        }
+    },
+    mounted() {
+        axios
+            .get('http://127.0.0.1:8000/api/index')
+            .then(response => (this.competitions = response.data))
+            .catch(error => console.log(error))
     },
     props: {
         msg: String
