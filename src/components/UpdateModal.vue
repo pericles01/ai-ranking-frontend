@@ -4,37 +4,48 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Update your Competition</h1>
+                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Fill in the form</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <form class="px-md-2">
 
                         <div class="form-outline mb-4">
-                            <input type="text" id="form3Example1q" placeholder="Title" name="Title" class="form-control" />
+                            <label for="exampleFormControlTextarea" class="form-label">Title</label><i
+                                class="bi bi-asterisk"></i>
+                            <input type="text" placeholder="Title" required v-model="competition.title"
+                                class="form-control" />
                         </div>
 
                         <div class="form-outline mb-4">
-                            <label for="exampleFormControlTextarea1" class="form-label">Litel description</label>
-                            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                            <label for="exampleFormControlTextarea1" class="form-label">Litel description</label><i
+                                class="bi bi-asterisk"></i>
+                            <textarea class="form-control" rows="3" required
+                                v-model="competition.litel_description"></textarea>
                         </div>
 
                         <div class="form-outline mb-4">
-                            <label for="exampleFormControlTextarea1" class="form-label">Long description</label>
-                            <textarea class="form-control" id="exampleFormControlTextarea1" rows="8"></textarea>
+                            <label for="exampleFormControlTextarea2" class="form-label">Long description</label><i
+                                class="bi bi-asterisk"></i>
+                            <textarea class="form-control" rows="8" required
+                                v-model="competition.long_description"></textarea>
                         </div>
 
                         <div class="form-outline mb-4">
-                            <label for="exampleFormControlTextarea1" class="form-label">Evaluation text</label>
-                            <textarea class="form-control" id="exampleFormControlTextarea1" rows="4"></textarea>
+                            <label for="exampleFormControlTextarea3" class="form-label">Evaluation text</label><i
+                                class="bi bi-asterisk"></i>
+                            <textarea class="form-control" rows="4" required
+                                v-model="competition.evaluation_text"></textarea>
                         </div>
 
                         <div class="form-outline mb-4">
-                            <input class="form-control" type="file" id="formFile" accept="file/csv, file/xls" />
+                            <input class="form-control" type="file" id="ref_file" required accept="file/csv, file/xls"
+                                ref="ref_file" @change="handleFileUpload" />
                             <label for="formFile" class="form-label">Upload your CSV file</label>
                         </div>
 
-                        <button type="submit" class="btn btn-success btn-lg mb-1">Submit</button>
+                        <button type="button" @click="updateCompetition()"
+                            class="btn btn-success btn-lg mb-1" data-bs-dismiss="">Submit</button>
 
                     </form>
                 </div>
@@ -47,13 +58,87 @@
 </template>
 
 <script>
+import axios from 'axios';
 export default {
-    name: 'UpdateModal',
-    props: {
-        msg: String
-    }
+    name: 'AddCompetitionModal',
+    props: ['id_component'],
+    data() {
+        return {
+            competition: {
+                title: '',
+                litel_description: '',
+                long_description: '',
+                evaluation_text: '',
+            },
+            selectedFile: null,
+            drawer: true,
+            user: { roles: [0] },
+            token: localStorage.getItem('token'), //get your local storage data
+        }
+    },
+    
+    mounted() {
+        this.getCompetitionData(this.id_component);
+    },
+    methods: {
+        getCompetitionData(competitionsId){
+            axios.get(`http://127.0.0.1:8000/api/show/${competitionsId}`, {
+                headers: {
+                    Authorization: "Bearer " + this.token
+                }
+            })
+                .then(response => (this.competition = response.data,
+                        this.competition.title = response.data.title,
+                        this.competition.litel_description = response.data.litel_description,
+                        this.competition.long_description = response.data.long_description,
+                        this.competition.evaluation_text = response.data.evaluation_text
+                    )
+                )
+                .catch(error => console.log(error))
+        },
+        open1() {
+            this.$notify.success({
+                title: 'Success',
+                message: 'Ceci est un message de succès',
+                offset: 100
+            });
+        },
+        handleFileUpload(event) {
+            this.selectedFile = event.target.files[0];
+        },
+        updateCompetition() {
+            let formData = new FormData();
+            formData.append('title', this.competition.title);
+            formData.append('litel_description', this.competition.litel_description);
+            formData.append('long_description', this.competition.long_description);
+            formData.append('evaluation_text', this.competition.evaluation_text);
+            formData.append('ref_file', this.selectedFile);
+            //console.log(formData);
+            axios.put('http://127.0.0.1:8000/api/v1/competition/'+ this.id_component, formData, {
+                headers: {
+                    Authorization: "Bearer " + this.token
+                }
+            })
+                .then(() => (this.$router.go({ name: "Admin" }), this.$notify.success({
+                    title: 'Success',
+                    message: 'Competition Updated Succesfully',
+                    offset: 100
+                }))
+                )
+                .catch(function () {
+                    alert('Competition Failled');
+                    console.log('FAILURE!!');
+                });
+        }
+    },
 }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style src="../assets/css/styles.css"></style>
+<style scoped>.bi-asterisk {
+    margin-left: 5px;
+    color: rgb(194, 12, 12);
+    font-size: small;
+
+}</style>

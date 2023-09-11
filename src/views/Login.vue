@@ -17,17 +17,23 @@
 
             <div class="card bg-glass">
               <div class="card-body px-4 py-5 px-md-5">
-                <form action="/Admin">
+                <form>
                   <!-- Email input -->
-                  <div class="form-outline mb-4">
-                    <input type="email" id="form3Example3" class="form-control" />
+                  <div class="form-outline mb-4" :class="{ error: v$.authuser.$errors.length }">
+                    <input type="email" id="form3Example3" class="form-control" v-model="v$.authuser.email.$model" />
                     <label class="form-label" for="form3Example3">Email address</label>
+                    <div class="input-errors" v-for="(error, index) of v$.authuser.email.$errors" :key="index">
+                        <div class="error-msg">{{ error.$message }}</div>
+                    </div>
                   </div>
 
                   <!-- Password input -->
-                  <div class="form-outline mb-4">
-                    <input type="password" id="form3Example4" class="form-control" />
+                  <div class="form-outline mb-4" :class="{ error: v$.authuser.$errors.length }">
+                    <input type="password" id="form3Example4" class="form-control" v-model="v$.authuser.password.$model" />
                     <label class="form-label" for="form3Example4">Password</label>
+                    <div class="input-errors" v-for="(error, index) of v$.authuser.password.$errors" :key="index">
+                      <div class="error-msg">{{ error.$message }}</div>
+                    </div>
                   </div>
 
                   <!-- Checkbox -->
@@ -39,29 +45,11 @@
                   </div>
 
                   <!-- Submit button -->
-                  <button type="submit" class="btn btn-primary btn-block mb-4">
+                  <button type="button" :disabled="v$.authuser.$invalid" @click="loginUser()" class="btn btn-primary btn-block mb-4">
                     Login
                   </button>
 
                   <!-- Register buttons -->
-                  <div class="text-center">
-                    <p>or Login with:</p>
-                    <button type="button" class="btn btn-link btn-floating mx-1">
-                      <i class="fab fa-facebook-f"></i>
-                    </button>
-
-                    <button type="button" class="btn btn-link btn-floating mx-1">
-                      <i class="fab fa-google"></i>
-                    </button>
-
-                    <button type="button" class="btn btn-link btn-floating mx-1">
-                      <i class="fab fa-twitter"></i>
-                    </button>
-
-                    <button type="button" class="btn btn-link btn-floating mx-1">
-                      <i class="fab fa-github"></i>
-                    </button>
-                  </div>
                 </form>
               </div>
             </div>
@@ -72,11 +60,61 @@
 </template>
 
 <script>
+import axios from 'axios';
+import useVuelidate from '@vuelidate/core'
+import { required, email } from '@vuelidate/validators'
 export default {
-    name: 'Login',
-    props: {
+  name: 'Login',
+  setup() {
+    return { v$: useVuelidate() , islog$: localStorage.getItem('token') }
+  },
+  props: {
         msg: String
+  },
+  data() {
+    return {
+      authuser: {
+        email: '',
+        password: '',
+      },
+      selectedFile: null,
     }
+  },
+  validations() {
+    return {
+      authuser: {
+        email: {
+          required,
+          email,
+        },
+        password: {
+          required,
+        },
+      },
+    }
+  },
+  methods: {
+    loginUser() {
+      
+      let formData = new FormData();
+      formData.append('email', this.authuser.email);
+      formData.append('password', this.authuser.password);
+      console.log(formData);
+      axios.post('http://127.0.0.1:8000/api/login', formData).then(response => (
+        localStorage.setItem('token', response.data.token), //store them from response
+        this.$router.push({ name: "Admin" }),
+        this.$notify.success({
+          title: 'Success',
+          message: 'Loguet Succesfully',
+          offset: 100
+        })
+      ))
+      .catch(function () {
+        alert('Connecxion Failled');
+        console.log('FAILURE!!');
+      })
+    },
+  }
 }
 </script>
 

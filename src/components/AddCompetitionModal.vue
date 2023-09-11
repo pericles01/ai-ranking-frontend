@@ -10,31 +10,45 @@
                 <div class="modal-body">
                     <form class="px-md-2">
 
-                        <div class="form-outline mb-4">
-                            <input type="text"  placeholder="Title" v-model="competition.title" class="form-control" />
+                        <div class="form-outline mb-4" :class="{ error: v$.competition.$errors.length }" >
+                            <label for="exampleFormControlTextarea" class="form-label">Title</label><i class="bi bi-asterisk"></i>
+                            <input type="text"  placeholder="Title" required v-model="v$.competition.title.$model" class="form-control" />
+                            <div class="input-errors" v-for="(error, index) of v$.competition.title.$errors" :key="index">
+                                <div class="error-msg">{{ error.$message }}</div>
+                            </div>
+                        </div>
+
+                        <div class="form-outline mb-4" :class="{ error: v$.competition.$errors.length }">
+                            <label for="exampleFormControlTextarea1" class="form-label">Litel description</label><i class="bi bi-asterisk"></i>
+                            <textarea class="form-control"  rows="3" required v-model="v$.competition.litel_description.$model"></textarea>
+                            <div class="input-errors" v-for="(error, index) of v$.competition.litel_description.$errors" :key="index">
+                                <div class="error-msg">{{ error.$message }}</div>
+                            </div>
+                        </div>
+
+                        <div class="form-outline mb-4" :class="{ error: v$.competition.$errors.length }">
+                            <label for="exampleFormControlTextarea2" class="form-label">Long description</label><i class="bi bi-asterisk"></i>
+                            <textarea class="form-control"  rows="8" required v-model="v$.competition.long_description.$model"></textarea>
+                            <div class="input-errors" v-for="(error, index) of v$.competition.long_description.$errors" :key="index">
+                                <div class="error-msg">{{ error.$message }}</div>
+                            </div>
+                        </div>
+
+                        <div class="form-outline mb-4" :class="{ error: v$.competition.$errors.length }">
+                            <label for="exampleFormControlTextarea3" class="form-label">Evaluation text</label><i class="bi bi-asterisk"></i>
+                            <textarea class="form-control"  rows="4" required v-model="v$.competition.evaluation_text.$model"></textarea>
+                            <div class="input-errors" v-for="(error, index) of v$.competition.evaluation_text.$errors" :key="index">
+                                <div class="error-msg">{{ error.$message }}</div>
+                            </div>
                         </div>
 
                         <div class="form-outline mb-4">
-                            <label for="exampleFormControlTextarea1" class="form-label">Litel description</label>
-                            <textarea class="form-control"  rows="3" v-model="competition.litel_description"></textarea>
-                        </div>
-
-                        <div class="form-outline mb-4">
-                            <label for="exampleFormControlTextarea2" class="form-label">Long description</label>
-                            <textarea class="form-control"  rows="8" v-model="competition.long_description"></textarea>
-                        </div>
-
-                        <div class="form-outline mb-4">
-                            <label for="exampleFormControlTextarea3" class="form-label">Evaluation text</label>
-                            <textarea class="form-control"  rows="4" v-model="competition.evaluation_text"></textarea>
-                        </div>
-
-                        <div class="form-outline mb-4">
-                            <input class="form-control" type="file" id="ref_file" accept="file/csv, file/xls" ref="ref_file" @change="handleFileUpload"/>
+                            <input class="form-control" type="file" id="ref_file" required accept="file/csv, file/xls" ref="ref_file" @change="handleFileUpload"/>
                             <label for="formFile" class="form-label">Upload your CSV file</label>
+                            <i class="bi bi-asterisk"></i>
                         </div>
 
-                        <button @click="createCompetition()" class="btn btn-success btn-lg mb-1">Submit</button>
+                        <button type="button" :disabled="v$.competition.$invalid" @click="createCompetition()" class="btn btn-success btn-lg mb-1" data-bs-dismiss="">Submit</button>
 
                     </form>
                 </div>
@@ -48,8 +62,13 @@
 
 <script>
 import axios from 'axios';
+import useVuelidate from '@vuelidate/core'
+import { required, minLength } from '@vuelidate/validators'
 export default {
     name: 'AddCompetitionModal',
+    setup() {
+        return { v$: useVuelidate() }
+    },
     props: {
         msg: String
     },
@@ -62,13 +81,44 @@ export default {
                 evaluation_text: '',
             },
             selectedFile: null,
+            drawer: true,
+            user: { roles: [0] },
+            token: localStorage.getItem('token'), //get your local storage data
+        }
+    },
+    validations() {
+        return {
+            competition: {
+                title: {
+                    required,
+                    min: minLength(4)
+                },
+                litel_description: {
+                    required,
+                    min: minLength(10)
+                },
+                long_description: {
+                    required,
+                    min: minLength(20)
+                },
+                evaluation_text: {
+                    required,
+                    min: minLength(10)
+                },
+            },
         }
     },
     methods: {
+        open1() {
+            this.$notify.success({
+                title: 'Success',
+                message: 'Ceci est un message de succès',
+                offset: 100
+            });
+        },
         handleFileUpload(event) {
             this.selectedFile = event.target.files[0];
         },
-
         createCompetition() {
             let formData = new FormData();
             formData.append('title', this.competition.title);
@@ -77,17 +127,34 @@ export default {
             formData.append('evaluation_text', this.competition.evaluation_text);
             formData.append('ref_file', this.selectedFile);
             //console.log(formData);
-            axios.post('http://127.0.0.1:8000/api/createCompetition', formData)
-            .then(function () {
-                    console.log('SUCCESS!!');
+            axios.post('http://127.0.0.1:8000/api/v1/competition', formData, {
+                headers: {
+                    Authorization: "Bearer " + this.token
+                }
             })
-            .catch(function () {
+                .then(() => (this.$router.go({ name: "Admin"}), this.$notify.success({
+                        title: 'Success',
+                        message: 'Competition Added Succesfully',
+                        offset: 100
+                    }))
+                )
+                .catch(function () {
+                    alert('Competition Failled');
                     console.log('FAILURE!!');
-            });
+                });
         }
-    }
+    },
 }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style src="../assets/css/styles.css"></style>
+<style scoped>
+    .bi-asterisk {
+        margin-left: 5px;
+        color: rgb(194, 12, 12);
+        font-size: small;
+
+    }
+
+</style>
