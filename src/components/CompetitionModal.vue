@@ -14,7 +14,7 @@
                 </div>
 
                 <div class="form-outline mb-4">
-                    <input type="phone" class="form-control" placeholder="Phone nomber" id="examplePhone" v-model="phone_number"/>
+                    <input type="phone" class="form-control" placeholder="matricule" id="examplePhone" v-model="matricule"/>
                 </div>
 
                 <div class="form-outline mb-4">
@@ -42,7 +42,7 @@ export default {
   data() {
     return {
       name: '',
-      phone_number: '',
+      matricule: '',
       file: '', 
     }
   },
@@ -50,7 +50,7 @@ export default {
     submitFormData() {
       let visitor = new visitor();
       visitor.append('name', this.name);
-      visitor.append('phone_number', this.phone_number);
+      visitor.append('phone_number', this.matricule);
       visitor.append('file', this.file);
       axios.post(`http://127.0.0.1:8000/api/compareFile/1`,
         visitor,

@@ -15,13 +15,21 @@
                 <li class="nav-item">
                   <router-link class="nav-link mx-2" :class="$route.name == 'Competition' ? 'active' : ''" aria-current="page" :to="{ name: 'Competition' }">Competition</router-link>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item" v-if="islog$">
                     <router-link class="nav-link mx-2" :class="$route.name == 'Admin' ? 'active' : ''" aria-current="page" :to="{ name: 'Admin' }">Manage Competition</router-link>
                 </li>
               </ul>
               <ul class="navbar-nav ms-auto d-none d-lg-inline-flex">
-                <li class="nav-item mx-2">
-                  <router-link class="nav-link text-whit h5 fw-bolder text-gradient" to="/Login">
+                <li class="nav-item mx-2" v-if="islog$">
+                    <button class="nav-link text-whit h5 fw-bolder text-gradient" @click="logout()">
+                      <div class="pulse text-gradient fw-bolder">
+                        <i class="bi bi-box-arrow-right"></i>
+                      </div>
+                      Logout
+                    </button>
+                  </li>
+                <li class="nav-item mx-2" v-else>
+                  <router-link class="nav-link text-whit h5 fw-bolder text-gradient" to="/login">
                     <div class="pulse text-gradient fw-bolder">
                       <i class="bi bi-box-arrow-right"></i>
                     </div>
@@ -39,11 +47,37 @@
 
 <script>
 import Footer from "@/components/Footer.vue";
-
+import axios from 'axios';
 export default {
   name: 'App',
+  setup() {
+    return { islog$: localStorage.getItem('token') }
+  },
   components: {
    Footer
+  },
+  data() {
+    return {
+       token: localStorage.getItem('token'),//get your local storage data
+    }
+  },
+  methods: {
+    logout() {
+      axios.delete('http://127.0.0.1:8000/api/logout', {
+        headers: {
+          Authorization: "Bearer " + this.token
+        }
+      }).then(() => (
+        console.log("ok"),
+        localStorage.removeItem('token'),
+        localStorage.removeItem('expiration'),
+        this.$router.push("/login")
+
+      )).catch(function () {
+        alert('Competition Failled');
+        console.log('FAILURE!!');
+      });
+    }
   }
 }
 </script>

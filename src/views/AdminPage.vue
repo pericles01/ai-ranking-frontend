@@ -16,7 +16,7 @@
             <div class="col-lg-11 col-xl-9 col-xxl-8">
                 <section>
                                         <!-- Skillset Card-->
-                                        <div class="card shadow border-0 rounded-4 mb-5" v-for="competition in competitions" :key="competition">
+                                        <div class="card shadow border-0 rounded-4 mb-5" v-for="(competition, index) in this.competitions" :key="index">
                                             <div class="card-body p-4">
                                                 <!-- Professional skills list-->
                                                 <div class="mb-1">
@@ -42,9 +42,9 @@
                                                 </div>
                                                 <!-- Languages list-->
                                             </div>
+                                            <DelateModal :id_component ="competition.id"/>
+                                            <UpdateModal :id_component ="competition.id"/>
                                         </div>
-                                        <DelateModal/>
-                                        <UpdateModal/>
                 </section>
             </div>
         </div>
@@ -66,14 +66,26 @@ export default {
     },
     data() {
         return {
-            competitions: null
+            competitions: null,
+            drawer: true,
+            user: { roles: [0] },
+            token: localStorage.getItem('token'), //get your local storage data
         }
     },
     mounted() {
-        axios
-            .get('http://127.0.0.1:8000/api/index')
-            .then(response => (this.competitions = response.data))
-            .catch(error => console.log(error))
+        this.getCompetition();
+    },
+    methods: {
+        getCompetition() {
+            axios
+                .get('http://127.0.0.1:8000/api/v1/competition', {
+                    headers: {
+                        Authorization: "Bearer " + this.token
+                    }
+                })
+                .then(response => (this.competitions = response.data))
+                .catch(error => console.log(error))
+        }
     },
     props: {
         msg: String

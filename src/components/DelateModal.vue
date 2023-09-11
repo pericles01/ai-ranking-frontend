@@ -11,7 +11,7 @@
                    <h1 class="modal-title fs-5" id="staticBackdropLabel">do you really want to suppress this competition ?</h1>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Yes</button>
+                    <button type="button" @click="delateCompetition()" class="btn btn-primary">Yes</button>
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
                 </div>
             </div>
@@ -20,10 +20,37 @@
 </template>
 
 <script>
+import axios from "axios";
 export default {
     name: 'DelateModal',
-    props: {
-        msg: String
+    props: ['id_component'],
+    data() {
+        return {
+            drawer: true,
+            user: { roles: [0] },
+            token: localStorage.getItem('token'), //get your local storage data
+        }
+    },
+    methods: {
+        delateCompetition() {
+            axios.delete('http://127.0.0.1:8000/api/v1/competition/'+ this.id_component , {
+                headers: {
+                    Authorization: "Bearer " + this.token
+                }
+            }).then(() => (
+                console.log("ok"),
+                this.$router.go({name: "Admin" }),
+                this.$notify.success({
+                    title: 'Success',
+                    message: 'Competition Deleted Succesfully',
+                    offset: 100
+                })
+
+            )).catch(function () {
+                alert('Competition Failled');
+                console.log('FAILURE!!');
+            });
+        }
     }
 }
 </script>

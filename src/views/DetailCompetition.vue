@@ -50,20 +50,28 @@
               <div class="modal-body">
                 <form class="px-md-2">
 
-                    <div class="form-outline mb-4">
-                        <input type="text" id="form3Example1q" placeholder="Name" class="form-control" v-model="visitor.name" />
+                    <div class="form-outline mb-4" :class="{ error: v$.visitor.$errors.length }">
+                        <label for="exampleFormControlNameInput" class="form-label">Name</label><i class="bi bi-asterisk"></i>
+                        <input type="text" id="form3Example1q" placeholder="Name" class="form-control" v-model="v$.visitor.name.$model" />
+                        <div class="input-errors" v-for="(error, index) of v$.visitor.name.$errors" :key="index">
+                            <div class="error-msg">{{ error.$message }}</div>
+                        </div>
                     </div>
 
-                    <div class="form-outline mb-4">
-                        <input type="phone" class="form-control" placeholder="Phone nomber" id="examplePhone" v-model="visitor.phone_number"/>
+                    <div class="form-outline mb-4" :class="{ error: v$.visitor.$errors.length }">
+                        <label for="exampleFormControlMatriculeInput" class="form-label">Matricule</label><i class="bi bi-asterisk"></i>
+                        <input type="text" class="form-control" placeholder="Matricule" id="matricule" v-model="v$.visitor.matricule.$model"/>
+                        <div class="input-errors" v-for="(error, index) of v$.visitor.matricule.$errors" :key="index">
+                            <div class="error-msg">{{ error.$message }}</div>
+                        </div>
                     </div>
 
                     <div class="form-outline mb-4">
                         <input class="form-control" type="file" id="file" accept="file/csv" ref="file"  @change="handleFileUpload" />
-                        <label for="formFile" class="form-label">Upload your CSV file</label>
+                        <label for="formFile" class="form-label">Upload your CSV file</label><i class="bi bi-asterisk"></i>
                     </div>
 
-                    <button  @click="submitFormData()" class="btn btn-success btn-lg mb-1">Submit</button>
+                    <button type="button" :disabled="v$.visitor.$invalid" @click="submitFormData()" class="btn btn-success btn-lg mb-1">Submit</button>
 
                 </form>         
               </div>
@@ -98,8 +106,8 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-for="ranking in rankings" :key="ranking">
-                <td v-if="ranking.name" :r=r++>{{ r }}</td>
+               <tr v-for="(ranking, index) in this.rankings" :key="index">
+                <td>{{ index + 1 }}</td>
                 <td>{{ ranking.name }}</td>
                 <td>{{ ranking.result }}%</td>
               </tr>
@@ -113,8 +121,13 @@
 <script>
 //import competModal from "@/components/CompetitionModal.vue";
 import axios from "axios";
+import useVuelidate from '@vuelidate/core';
+import { required, minLength } from '@vuelidate/validators';
 export default {
     name: 'Detail',
+    setup() {
+        return { v$: useVuelidate() }
+    },
     components:{
         //competModal,
     },
@@ -132,9 +145,23 @@ export default {
             },
             visitor: {
                 name: '',
-                phone_number: '',
+                matricule: '',
             },
             selectedFile: null,
+        }
+    },
+    validations() {
+        return {
+            visitor: {
+                name: {
+                    required,
+                    min: minLength(4)
+                },
+                matricule: {
+                    required,
+                    min: minLength(4)
+                },
+            },
         }
     },
     /*onCreated() {
@@ -145,6 +172,13 @@ export default {
         this.getRankingData(this.$route.params.id);
     },
     methods: {
+        open1() {
+            this.$notify.success({
+                title: 'Success',
+                message: 'Ceci est un message de succès',
+                offset: 100
+            });
+        },
         getCompetitionData(competitionId) {
             axios.get(`http://127.0.0.1:8000/api/show/${competitionId}`)
                 .then(response => (this.model.competition = response.data))
@@ -165,14 +199,18 @@ export default {
             let competitionId = this.$route.params.id
             let formData = new FormData();
             formData.append('name', this.visitor.name);
-            formData.append('phone_number', this.visitor.phone_number);
+            formData.append('matricule', this.visitor.matricule);
             formData.append('file', this.selectedFile);
             //console.log(formData);
             axios.post(`http://127.0.0.1:8000/api/compareFile/${competitionId}`, formData)
-                .then(function () {
-                    console.log('SUCCESS!!');
-                })
+                .then(() => (this.$router.go({ path: `/Detail/${competitionId}` }), this.$notify.success({
+                        title: 'Success',
+                        message: 'Your file  added Succesfully!! go to bottom and tcheck your result',
+                        offset: 100
+                    }))
+                )
                 .catch(function () {
+                    alert('Participation Failled');
                     console.log('FAILURE!!');
                 });
             /*let visitor = new visitor();
@@ -205,5 +243,11 @@ export default {
     .card{
         border-color: rgba(93, 30, 209, 0.76);
         border-width: 1px;
+    }
+    .bi-asterisk {
+        margin-left: 5px;
+        color: rgb(194, 12, 12);
+        font-size: small;
+
     }
 </style>
