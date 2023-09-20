@@ -15,12 +15,12 @@
                 <li class="nav-item">
                   <router-link class="nav-link mx-2" :class="$route.name == 'Competition' ? 'active' : ''" aria-current="page" :to="{ name: 'Competition' }">Competition</router-link>
                 </li>
-                <li class="nav-item" v-if="islog$">
+                <li class="nav-item" v-if="token">
                     <router-link class="nav-link mx-2" :class="$route.name == 'Admin' ? 'active' : ''" aria-current="page" :to="{ name: 'Admin' }">Manage Competition</router-link>
                 </li>
               </ul>
               <ul class="navbar-nav ms-auto d-none d-lg-inline-flex">
-                <li class="nav-item mx-2" v-if="islog$">
+                <li class="nav-item mx-2" v-if="token">
                     <button class="nav-link text-whit h5 fw-bolder text-gradient" @click="logout()">
                       <div class="pulse text-gradient fw-bolder">
                         <i class="bi bi-box-arrow-right"></i>
@@ -61,6 +61,11 @@ export default {
        token: localStorage.getItem('token'),//get your local storage data
     }
   },
+  watch: {
+    '$route.path'() {
+      this.token = localStorage.getItem('token');
+    }
+  },
   methods: {
     logout() {
       axios.delete('http://127.0.0.1:8000/api/logout', {
@@ -71,7 +76,7 @@ export default {
         console.log("ok"),
         localStorage.removeItem('token'),
         localStorage.removeItem('expiration'),
-        this.$router.push("/login")
+        this.$router.go('/Login')
 
       )).catch(function () {
         alert('Competition Failled');

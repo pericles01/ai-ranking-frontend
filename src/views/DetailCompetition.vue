@@ -12,15 +12,15 @@
                         <div class="card-body">
                             <h2 class="card-title fw-bolder mb-3 mt-3">{{ model.competition.title }}</h2>
                             <p class="card-text">
-                                litel description...<br>
+                                <b class="gt-text">Litel Description</b><br>
                                 {{ model.competition.litel_description }}
                             </p>
                             <p class="card-text mb-5 mt-5">
-                                long description...<br>
+                                <b class="gt-text">Long Description</b><br>
                                 {{ model.competition.long_description }}
                             </p>
                             <p class="card-text mb-5">
-                                evaluation text...<br>
+                                <b class="gt-text">Evaluation Text</b><br>
                                {{ model.competition.evaluation_text }}
                             </p>
                         </div>
@@ -249,5 +249,10 @@ export default {
         color: rgb(194, 12, 12);
         font-size: small;
 
+    }
+    .gt-text{
+        font-size: large;
+        /*font-family: 'Lucida Grande';*/
+        color:rgba(93, 30, 209, 0.76);
     }
 </style>
