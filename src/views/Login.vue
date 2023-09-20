@@ -102,7 +102,7 @@ export default {
       console.log(formData);
       axios.post('http://127.0.0.1:8000/api/login', formData).then(response => (
         localStorage.setItem('token', response.data.token), //store them from response
-        this.$router.push({ name: "Admin" }),
+        this.$router.push({ path: '/Admin'}),
         this.$notify.success({
           title: 'Success',
           message: 'Loguet Succesfully',

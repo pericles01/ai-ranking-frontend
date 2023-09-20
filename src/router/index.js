@@ -31,7 +31,7 @@ const routes = [
     }
   },
   {
-    path: "/login",
+    path: "/Login",
     name: "Login",
     component: Login,
   },
@@ -54,7 +54,7 @@ router.beforeEach((to, from, next) => {
       next();
     } else {
       // User is not authenticated, redirect to login
-      next('/login');
+      next('/Login');
     }
   } else {
     // Non-protected route, allow access
