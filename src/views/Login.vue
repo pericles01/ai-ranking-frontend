@@ -105,7 +105,7 @@ export default {
         this.$router.push({ path: '/Admin'}),
         this.$notify.success({
           title: 'Success',
-          message: 'Loguet Succesfully',
+          message: 'Login Succesfully',
           offset: 100
         })
       ))

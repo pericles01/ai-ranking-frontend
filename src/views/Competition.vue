@@ -18,6 +18,7 @@
                             <section>
                                 <!-- Skillset Card-->
                                 <div class="card shadow border-0 rounded-4 mb-5" v-for="competition in competitions" :key="competition">
+                                    <router-link style="text-decoration: none;" :to="{ name: 'Detail', params: { id: competition.id } }">
                                     <div class="card-body p-4">
                                         <!-- Professional skills list-->
                                         <div class="mb-1">
@@ -34,12 +35,13 @@
                                                 <div class="col-lg-8">
                                                     <div>{{ competition.litel_description }}.</div>
                         
-                                                    <router-link class="btn btn-primary mt-3 px-3 py-2" :to="{ name: 'Detail', params: { id: competition.id } }">raed more..</router-link>
+                                                    <router-link class="btn btn-primary mt-3 px-3 py-2" :to="{ name: 'Detail', params: { id: competition.id } }">Read more</router-link>
                                                 </div>
                                             </div>
                                         </div>
                                         <!-- Languages list-->
                                     </div>
+                                    </router-link>
                                 </div>
                             </section>
                         </div>

@@ -33,13 +33,14 @@ export default {
     },
     methods: {
         delateCompetition() {
-            axios.delete('http://127.0.0.1:8000/api/v1/competition/'+ this.id_component , {
+            console.log(this.id_component.id);
+            axios.delete('http://127.0.0.1:8000/api/v1/competition/'+ this.id_component.id, {
                 headers: {
                     Authorization: "Bearer " + this.token
                 }
             }).then(() => (
                 console.log("ok"),
-                this.$router.go({name: "Admin" }),
+                this.$router.go({path: "/Admin" }),
                 this.$notify.success({
                     title: 'Success',
                     message: 'Competition Deleted Succesfully',
@@ -47,7 +48,7 @@ export default {
                 })
 
             )).catch(function () {
-                alert('Competition Failled');
+                alert('Delete Competition Failled');
                 console.log('FAILURE!!');
             });
         }

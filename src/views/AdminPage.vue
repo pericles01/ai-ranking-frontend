@@ -20,31 +20,35 @@
                                             <div class="card-body p-4">
                                                 <!-- Professional skills list-->
                                                 <div class="mb-1">
+                                                    <router-link style="text-decoration: none;" :to="{ name: 'Detail', params: { id: competition.id } }">
                                                     <div class="d-flex align-items-center mb-4">
                                                         <div class="feature bg-primary bg-gradient-primary-to-secondary text-white rounded-3 me-3"><i class="bi bi-trophy-fill"></i></div>
                                                         <h3 class="fw-bolder mb-0"><span class="text-gradient d-inline">{{ competition.title }}</span></h3>
                                                     </div>
+                                                    </router-link>
                                                     <div class="row align-items-center gx-5">
+                                                        <router-link class="col text-center text-lg-start" style="text-decoration: none;" :to="{ name: 'Detail', params: { id: competition.id } }">
                                                         <div class="col text-center text-lg-start">
                                                                 <div class="bg-light p-4 rounded-4">
                                                                     <img class="img-fluid" src="../assets/compet.jpg" alt="New York">
                                                                 </div>
                                                         </div>
+                                                        </router-link>
                                                         <div class="col-lg-6">
-                                                            <div>{{ competition.litel_description }}</div>
-                                                            <router-link class="btn btn-primary mt-3 px-3 py-2" :to="{ name: 'Detail', params: { id: competition.id } }">raed more..</router-link>
+                                                            <router-link style="text-decoration: none;" :to="{ name: 'Detail', params: { id: competition.id } }"><div>{{ competition.litel_description }}</div></router-link>
+                                                            <router-link class="btn btn-primary mt-3 px-3 py-2" :to="{ name: 'Detail', params: { id: competition.id } }">Read more</router-link>
                                                         </div>
                                                         <div class="col align-content-lg-end">
-                                                            <i class="bi bi-trash-fill" data-bs-toggle="modal" data-bs-target="#delete"></i>
-                                                            <i class="bi bi-pencil-square" data-bs-toggle="modal" data-bs-target="#update"></i>
+                                                            <i class="bi bi-trash-fill" data-bs-toggle="modal" @click="() => maFonction(competition)" data-bs-target="#delete"></i>
+                                                            <i class="bi bi-pencil-square" data-bs-toggle="modal" @click="() => maFonction(competition)" data-bs-target="#update"></i>
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <!-- Languages list-->
                                             </div>
-                                            <DelateModal :id_component ="competition.id"/>
-                                            <UpdateModal :id_component ="competition.id"/>
                                         </div>
+                                        <DelateModal :id_component ="selectCompetition"/>
+                                        <UpdateModal :id_component ="selectCompetition"/>
                 </section>
             </div>
         </div>
@@ -70,6 +74,13 @@ export default {
             drawer: true,
             user: { roles: [0] },
             token: localStorage.getItem('token'), //get your local storage data
+            selectCompetition: {},
+        }
+    },
+    watch: {
+        competitions(newValueCompetitions) {
+            console.log(this.competitions);
+            return this.competitions= newValueCompetitions;
         }
     },
     mounted() {
@@ -85,7 +96,11 @@ export default {
                 })
                 .then(response => (this.competitions = response.data))
                 .catch(error => console.log(error))
+        },
+        maFonction(competition) {
+            this.selectCompetition = competition;
         }
+
     },
     props: {
         msg: String

@@ -10,17 +10,16 @@
                     <div class="card" style="width:800px">
                         <img class="card-img-top" src="../assets/compet.jpg" alt="Card image">
                         <div class="card-body">
-                            <h2 class="card-title fw-bolder mb-3 mt-3">{{ model.competition.title }}</h2>
                             <p class="card-text">
-                                <b class="gt-text">Litel Description</b><br>
+                                <b class="gt-text">Overview</b><br>
                                 {{ model.competition.litel_description }}
                             </p>
                             <p class="card-text mb-5 mt-5">
-                                <b class="gt-text">Long Description</b><br>
+                                <b class="gt-text">Description</b><br>
                                 {{ model.competition.long_description }}
                             </p>
                             <p class="card-text mb-5">
-                                <b class="gt-text">Evaluation Text</b><br>
+                                <b class="gt-text">Evaluation</b><br>
                                {{ model.competition.evaluation_text }}
                             </p>
                         </div>

@@ -61,7 +61,7 @@
 import axios from 'axios';
 export default {
     name: 'AddCompetitionModal',
-    props: ['id_component'],
+    props: ['id_component','index'],
     data() {
         return {
             competition: {
@@ -76,18 +76,27 @@ export default {
             token: localStorage.getItem('token'), //get your local storage data
         }
     },
-    
+    watch: {
+        id_component: function (newValue) {
+            this.getCompetitionData(newValue.id); 
+        }
+    },
     mounted() {
-        this.getCompetitionData(this.id_component);
+        try {
+            this.getCompetitionData(this.newValue);
+        } catch (e) {
+             []
+        }
     },
     methods: {
-        getCompetitionData(competitionsId){
-            axios.get(`http://127.0.0.1:8000/api/show/${competitionsId}`, {
+        getCompetitionData(competitionsId) {
+            axios.get('http://127.0.0.1:8000/api/show/' + competitionsId, {
                 headers: {
                     Authorization: "Bearer " + this.token
                 }
             })
-                .then(response => (this.competition = response.data,
+                .then(response => ( console.log(competitionsId),
+                        this.competition = response.data,
                         this.competition.title = response.data.title,
                         this.competition.litel_description = response.data.litel_description,
                         this.competition.long_description = response.data.long_description,
@@ -108,13 +117,20 @@ export default {
         },
         updateCompetition() {
             let formData = new FormData();
+            //formData.append('_method', 'PUT');
             formData.append('title', this.competition.title);
             formData.append('litel_description', this.competition.litel_description);
             formData.append('long_description', this.competition.long_description);
             formData.append('evaluation_text', this.competition.evaluation_text);
             formData.append('ref_file', this.selectedFile);
-            //console.log(formData);
-            axios.put('http://127.0.0.1:8000/api/v1/competition/'+ this.id_component, formData, {
+            axios.put('http://127.0.0.1:8000/api/v1/competition/' + this.id_component.id, 
+                {
+                    title: this.competition.title,
+                    litel_description: this.competition.litel_description,
+                    long_description: this.competition.long_description,
+                    evaluation_text: this.competition.evaluation_text,
+                }
+            , {
                 headers: {
                     Authorization: "Bearer " + this.token
                 }

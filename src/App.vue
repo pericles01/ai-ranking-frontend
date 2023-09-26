@@ -76,8 +76,12 @@ export default {
         console.log("ok"),
         localStorage.removeItem('token'),
         localStorage.removeItem('expiration'),
-        this.$router.go('/Login')
-
+        this.$router.go('/Login'),
+        this.$notify.success({
+          title: 'Success',
+          message: 'Logout Succesfully',
+          offset: 100
+        })
       )).catch(function () {
         alert('Competition Failled');
         console.log('FAILURE!!');
