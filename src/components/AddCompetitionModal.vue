@@ -64,6 +64,7 @@
 import axios from 'axios';
 import useVuelidate from '@vuelidate/core'
 import { required, minLength } from '@vuelidate/validators'
+
 export default {
     name: 'AddCompetitionModal',
     setup() {
