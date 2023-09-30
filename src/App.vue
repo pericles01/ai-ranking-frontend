@@ -119,5 +119,4 @@ export default {
     font-size: xx-large;
   }
 
-
 </style>

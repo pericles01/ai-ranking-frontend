@@ -10,18 +10,21 @@
                     <div class="card" style="width:800px">
                         <img class="card-img-top" src="../assets/compet.jpg" alt="Card image">
                         <div class="card-body">
-                            <p class="card-text">
-                                <b class="gt-text">Overview</b><br>
-                                {{ model.competition.litel_description }}
-                            </p>
-                            <p class="card-text mb-5 mt-5">
-                                <b class="gt-text">Description</b><br>
-                                {{ model.competition.long_description }}
-                            </p>
-                            <p class="card-text mb-5">
-                                <b class="gt-text">Evaluation</b><br>
-                               {{ model.competition.evaluation_text }}
-                            </p>
+                            
+                            <b class="gt-text">Overview</b><br>
+                            <p class="card-text mt-2" v-html="model.competition.litel_description"></p>
+                                
+                            
+                            
+                            <b class="gt-text mb-5 mt-5">Description</b><br>
+                            <p class="card-text mb-2 mt-2" v-html="model.competition.long_description"></p>
+                            
+                            
+                            
+                            <b class="gt-text mb-5 mt-5">Evaluation</b><br>
+                            <p class="card-text mb-2 mt-2" v-html="model.competition.evaluation_text" ></p>
+                            
+                           
                         </div>
                     </div>
                 </section>
@@ -100,14 +103,14 @@
             <thead>
               <tr>
                 <th>Rang</th>
-                <th>Name</th>
+                <th>Matricule</th>
                 <th>Result</th>
               </tr>
             </thead>
             <tbody>
                <tr v-for="(ranking, index) in this.rankings" :key="index">
                 <td>{{ index + 1 }}</td>
-                <td>{{ ranking.name }}</td>
+                <td>{{ ranking.matricule }}</td>
                 <td>{{ ranking.result }}%</td>
               </tr>
             </tbody>
