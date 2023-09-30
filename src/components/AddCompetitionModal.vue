@@ -20,7 +20,26 @@
 
                         <div class="form-outline mb-4" :class="{ error: v$.competition.$errors.length }">
                             <label for="exampleFormControlTextarea1" class="form-label">Litel description</label><i class="bi bi-asterisk"></i>
-                            <textarea class="form-control"  rows="3" required v-model="v$.competition.litel_description.$model"></textarea>
+                            <editor
+                                class="form-control"
+                                api-key="i0d60ttl84iapdj8e75appqte6cj9izf0viyi6vmr2roc4kb"
+                                :init="{
+                                    height: 200,
+                                    menubar: false,
+                                    plugins: [
+                                                'advlist autolink lists link image charmap print preview anchor',
+                                                'searchreplace visualblocks code fullscreen',
+                                                'insertdatetime media table paste code help wordcount'
+                                    ],
+                                    toolbar:
+                                        'undo redo | formatselect | bold italic backcolor | \
+                                        alignleft aligncenter alignright alignjustify | \
+                                        bullist numlist outdent indent | removeformat | help'
+                                }"
+                                initial-value=""
+                                required
+                                v-model="v$.competition.litel_description.$model"
+                            />
                             <div class="input-errors" v-for="(error, index) of v$.competition.litel_description.$errors" :key="index">
                                 <div class="error-msg">{{ error.$message }}</div>
                             </div>
@@ -28,7 +47,26 @@
 
                         <div class="form-outline mb-4" :class="{ error: v$.competition.$errors.length }">
                             <label for="exampleFormControlTextarea2" class="form-label">Long description</label><i class="bi bi-asterisk"></i>
-                            <textarea class="form-control"  rows="8" required v-model="v$.competition.long_description.$model"></textarea>
+                            <editor
+                                    class="form-control"
+                                    api-key="i0d60ttl84iapdj8e75appqte6cj9izf0viyi6vmr2roc4kb"
+                                    :init="{
+                                        height: 200,
+                                        menubar: false,
+                                        plugins: [
+                                            'advlist autolink lists link image charmap print preview anchor',
+                                            'searchreplace visualblocks code fullscreen',
+                                            'insertdatetime media table paste code help wordcount'
+                                        ],
+                                        toolbar:
+                                            'undo redo | formatselect | bold italic backcolor | \
+                                            alignleft aligncenter alignright alignjustify | \
+                                            bullist numlist outdent indent | removeformat | help'
+                                    }"
+                                    initial-value=""
+                                    required
+                                    v-model="v$.competition.long_description.$model"
+                            />
                             <div class="input-errors" v-for="(error, index) of v$.competition.long_description.$errors" :key="index">
                                 <div class="error-msg">{{ error.$message }}</div>
                             </div>
@@ -36,11 +74,30 @@
 
                         <div class="form-outline mb-4" :class="{ error: v$.competition.$errors.length }">
                             <label for="exampleFormControlTextarea3" class="form-label">Evaluation text</label><i class="bi bi-asterisk"></i>
-                            <textarea class="form-control"  rows="4" required v-model="v$.competition.evaluation_text.$model"></textarea>
+                            <editor
+                                class="form-control"
+                                api-key="i0d60ttl84iapdj8e75appqte6cj9izf0viyi6vmr2roc4kb"
+                                :init="{
+                                    height: 200,
+                                    menubar: false,
+                                    plugins: [
+                                        'advlist autolink lists link image charmap print preview anchor',
+                                        'searchreplace visualblocks code fullscreen',
+                                        'insertdatetime media table paste code help wordcount'
+                                    ],
+                                    toolbar:
+                                        'undo redo | formatselect | bold italic backcolor | \
+                                            alignleft aligncenter alignright alignjustify | \
+                                            bullist numlist outdent indent | removeformat | help'
+                                }"
+                                initial-value=""
+                                required
+                                v-model="v$.competition.evaluation_text.$model"
+                            />
                             <div class="input-errors" v-for="(error, index) of v$.competition.evaluation_text.$errors" :key="index">
                                 <div class="error-msg">{{ error.$message }}</div>
                             </div>
-                        </div>
+                        </div>    
 
                         <div class="form-outline mb-4">
                             <input class="form-control" type="file" id="ref_file" required accept="file/csv, file/xls" ref="ref_file" @change="handleFileUpload"/>
@@ -48,7 +105,7 @@
                             <i class="bi bi-asterisk"></i>
                         </div>
 
-                        <button type="button" :disabled="v$.competition.$invalid" @click="createCompetition()" class="btn btn-success btn-lg mb-1" data-bs-dismiss="">Submit</button>
+                        <button type="button" :disabled="v$.competition.$invalid" @click="createCompetition()" class="btn btn-success btn-lg mb-1" data-bs-dismiss="modal" >Submit</button>
 
                     </form>
                 </div>
@@ -62,11 +119,17 @@
 
 <script>
 import axios from 'axios';
-import useVuelidate from '@vuelidate/core'
-import { required, minLength } from '@vuelidate/validators'
+import useVuelidate from '@vuelidate/core';
+import { required, minLength } from '@vuelidate/validators';
+import Editor from '@tinymce/tinymce-vue';
+import '@vueup/vue-quill/dist/vue-quill.snow.css';
+import '@vueup/vue-quill/dist/vue-quill.bubble.css';
 
 export default {
     name: 'AddCompetitionModal',
+    components: {
+        'editor': Editor
+    },
     setup() {
         return { v$: useVuelidate() }
     },
@@ -85,6 +148,7 @@ export default {
             drawer: true,
             user: { roles: [0] },
             token: localStorage.getItem('token'), //get your local storage data
+            dismod:'',
         }
     },
     validations() {
@@ -133,7 +197,14 @@ export default {
                     Authorization: "Bearer " + this.token
                 }
             })
-                .then(() => (this.$router.go({ name: "Admin"}), this.$notify.success({
+                .then(() => (/*this.$router.go({ name: "Admin"}),*/
+                    this.$emit('onAdd'),
+                    this.dismod = 'modal',
+                    this.competition.title= '',
+                    this.competition.litel_description= '',
+                    this.competition.long_description= '',
+                    this.competition.evaluation_text= '',
+                    this.$notify.success({
                         title: 'Success',
                         message: 'Competition Added Succesfully',
                         offset: 100

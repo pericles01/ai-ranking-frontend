@@ -11,7 +11,7 @@
                    <h1 class="modal-title fs-5" id="staticBackdropLabel">do you really want to suppress this competition ?</h1>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" @click="delateCompetition()" class="btn btn-primary">Yes</button>
+                    <button type="button" @click="delateCompetition()" class="btn btn-primary" data-bs-dismiss="modal">Yes</button>
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
                 </div>
             </div>
@@ -40,7 +40,8 @@ export default {
                 }
             }).then(() => (
                 console.log("ok"),
-                this.$router.go({path: "/Admin" }),
+                /*this.$router.go({path: "/Admin" }),*/
+                this.$emit('onDelete'),
                 this.$notify.success({
                     title: 'Success',
                     message: 'Competition Deleted Succesfully',

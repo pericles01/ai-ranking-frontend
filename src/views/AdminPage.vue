@@ -7,7 +7,7 @@
             </div>
         </div>
     </section>
-    <AddCompetModal/>
+    <AddCompetModal @on-add="getCompetition"/>
     <!-- Divider-->
         <div class="pb-5"></div>
     <!--End Divider-->    
@@ -35,7 +35,7 @@
                                                         </div>
                                                         </router-link>
                                                         <div class="col-lg-6">
-                                                            <router-link style="text-decoration: none;" :to="{ name: 'Detail', params: { id: competition.id } }"><div>{{ competition.litel_description }}</div></router-link>
+                                                            <router-link style="text-decoration: none;" :to="{ name: 'Detail', params: { id: competition.id } }"><div v-html="competition.litel_description"></div></router-link>
                                                             <router-link class="btn btn-primary mt-3 px-3 py-2" :to="{ name: 'Detail', params: { id: competition.id } }">Read more</router-link>
                                                         </div>
                                                         <div class="col align-content-lg-end">
@@ -47,8 +47,8 @@
                                                 <!-- Languages list-->
                                             </div>
                                         </div>
-                                        <DelateModal :id_component ="selectCompetition"/>
-                                        <UpdateModal :id_component ="selectCompetition"/>
+                                        <DelateModal :id_component ="selectCompetition" @on-delete="getCompetition"/>
+                                        <UpdateModal :id_component ="selectCompetition" @on-update="getCompetition"/>
                 </section>
             </div>
         </div>

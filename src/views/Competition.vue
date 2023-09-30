@@ -33,7 +33,7 @@
                                                         </div>
                                                     </div>
                                                 <div class="col-lg-8">
-                                                    <div>{{ competition.litel_description }}.</div>
+                                                    <div v-html="competition.litel_description"></div>
                         
                                                     <router-link class="btn btn-primary mt-3 px-3 py-2" :to="{ name: 'Detail', params: { id: competition.id } }">Read more</router-link>
                                                 </div>

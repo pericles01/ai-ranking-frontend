@@ -20,22 +20,82 @@
                         <div class="form-outline mb-4">
                             <label for="exampleFormControlTextarea1" class="form-label">Litel description</label><i
                                 class="bi bi-asterisk"></i>
-                            <textarea class="form-control" rows="3" required
-                                v-model="competition.litel_description"></textarea>
+                            <!--<textarea class="form-control" rows="3" required
+                                v-model="competition.litel_description"></textarea>-->
+                            <editor
+                                        class="form-control"
+                                        api-key="i0d60ttl84iapdj8e75appqte6cj9izf0viyi6vmr2roc4kb"
+                                        :init="{
+                                            height: 200,
+                                            menubar: false,
+                                            plugins: [
+                                                'advlist autolink lists link image charmap print preview anchor',
+                                                'searchreplace visualblocks code fullscreen',
+                                                'insertdatetime media table paste code help wordcount'
+                                            ],
+                                            toolbar:
+                                                'undo redo | formatselect | bold italic backcolor | \
+                                                                                                                        alignleft aligncenter alignright alignjustify | \
+                                                                                                                        bullist numlist outdent indent | removeformat | help'
+                                        }"
+                                        initial-value=""
+                                        required
+                                        v-model="competition.litel_description"
+                            />    
                         </div>
 
                         <div class="form-outline mb-4">
                             <label for="exampleFormControlTextarea2" class="form-label">Long description</label><i
                                 class="bi bi-asterisk"></i>
-                            <textarea class="form-control" rows="8" required
-                                v-model="competition.long_description"></textarea>
+                            <!--<textarea class="form-control" rows="8" required
+                                v-model="competition.long_description"></textarea>-->
+                            <editor
+                                        class="form-control"
+                                        api-key="i0d60ttl84iapdj8e75appqte6cj9izf0viyi6vmr2roc4kb"
+                                        :init="{
+                                            height: 200,
+                                            menubar: false,
+                                            plugins: [
+                                                'advlist autolink lists link image charmap print preview anchor',
+                                                'searchreplace visualblocks code fullscreen',
+                                                'insertdatetime media table paste code help wordcount'
+                                            ],
+                                            toolbar:
+                                                'undo redo | formatselect | bold italic backcolor | \
+                                                                                                                        alignleft aligncenter alignright alignjustify | \
+                                                                                                                        bullist numlist outdent indent | removeformat | help'
+                                        }"
+                                        initial-value=""
+                                        required
+                                        v-model="competition.long_description"
+                            />     
                         </div>
 
                         <div class="form-outline mb-4">
                             <label for="exampleFormControlTextarea3" class="form-label">Evaluation text</label><i
                                 class="bi bi-asterisk"></i>
-                            <textarea class="form-control" rows="4" required
-                                v-model="competition.evaluation_text"></textarea>
+                            <!--<textarea class="form-control" rows="4" required
+                                v-model="competition.evaluation_text"></textarea>-->
+                            <editor
+                                    class="form-control"
+                                    api-key="i0d60ttl84iapdj8e75appqte6cj9izf0viyi6vmr2roc4kb"
+                                    :init="{
+                                        height: 200,
+                                        menubar: false,
+                                        plugins: [
+                                            'advlist autolink lists link image charmap print preview anchor',
+                                            'searchreplace visualblocks code fullscreen',
+                                            'insertdatetime media table paste code help wordcount'
+                                        ],
+                                        toolbar:
+                                            'undo redo | formatselect | bold italic backcolor | \
+                                                                                alignleft aligncenter alignright alignjustify | \
+                                                                                bullist numlist outdent indent | removeformat | help'
+                                    }"
+                                    initial-value=""
+                                    required
+                                    v-model="competition.evaluation_text"
+                            />    
                         </div>
 
                         <div class="form-outline mb-4">
@@ -45,7 +105,7 @@
                         </div>
 
                         <button type="button" @click="updateCompetition()"
-                            class="btn btn-success btn-lg mb-1" data-bs-dismiss="">Submit</button>
+                            class="btn btn-success btn-lg mb-1" data-bs-dismiss="modal">Submit</button>
 
                     </form>
                 </div>
@@ -59,8 +119,15 @@
 
 <script>
 import axios from 'axios';
+import Editor from '@tinymce/tinymce-vue';
+import '@vueup/vue-quill/dist/vue-quill.snow.css';
+import '@vueup/vue-quill/dist/vue-quill.bubble.css';
+
 export default {
     name: 'AddCompetitionModal',
+    components: {
+        'editor': Editor
+    },
     props: ['id_component','index'],
     data() {
         return {
@@ -135,11 +202,13 @@ export default {
                     Authorization: "Bearer " + this.token
                 }
             })
-                .then(() => (this.$router.go({ name: "Admin" }), this.$notify.success({
-                    title: 'Success',
-                    message: 'Competition Updated Succesfully',
-                    offset: 100
-                }))
+                .then(() => (/*this.$router.go({ name: "Admin" }),*/
+                    this.$emit('onUpdate'),
+                    this.$notify.success({
+                        title: 'Success',
+                        message: 'Competition Updated Succesfully',
+                        offset: 100
+                    }))
                 )
                 .catch(function () {
                     alert('Competition Failled');
