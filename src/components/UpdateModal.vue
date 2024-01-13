@@ -118,7 +118,8 @@
 </template>
 
 <script>
-import axios from 'axios';
+//import axios from 'axios';
+import { HTTP } from '../http-common';
 import Editor from '@tinymce/tinymce-vue';
 import '@vueup/vue-quill/dist/vue-quill.snow.css';
 import '@vueup/vue-quill/dist/vue-quill.bubble.css';
@@ -157,7 +158,7 @@ export default {
     },
     methods: {
         getCompetitionData(competitionsId) {
-            axios.get('http://127.0.0.1:8000/api/show/' + competitionsId, {
+            HTTP.get('/show/' + competitionsId, {
                 headers: {
                     Authorization: "Bearer " + this.token
                 }
@@ -190,7 +191,7 @@ export default {
             formData.append('long_description', this.competition.long_description);
             formData.append('evaluation_text', this.competition.evaluation_text);
             formData.append('ref_file', this.selectedFile);
-            axios.put('http://127.0.0.1:8000/api/v1/competition/' + this.id_component.id, 
+            HTTP.put('/v1/competition/' + this.id_component.id, 
                 {
                     title: this.competition.title,
                     litel_description: this.competition.litel_description,

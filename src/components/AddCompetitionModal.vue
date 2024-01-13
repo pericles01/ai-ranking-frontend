@@ -118,7 +118,8 @@
 </template>
 
 <script>
-import axios from 'axios';
+//import axios from 'axios';
+import { HTTP } from '../http-common';
 import useVuelidate from '@vuelidate/core';
 import { required, minLength } from '@vuelidate/validators';
 import Editor from '@tinymce/tinymce-vue';
@@ -192,7 +193,7 @@ export default {
             formData.append('evaluation_text', this.competition.evaluation_text);
             formData.append('ref_file', this.selectedFile);
             //console.log(formData);
-            axios.post('http://127.0.0.1:8000/api/v1/competition', formData, {
+            HTTP.post('/v1/competition', formData, {
                 headers: {
                     Authorization: "Bearer " + this.token
                 }

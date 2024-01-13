@@ -2,7 +2,9 @@
   <div id="nav">
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark p-3">
           <div class="container-fluid">
-            <a class="navbar-brand text-gradient fw-bolder" href="#">P-LOGO</a>
+            <a class="navbar-brand text-gradient fw-bolder" href="#">
+              <img class="img-fluid" src="/assets/thm.svg" alt="New York">
+            </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
               <span class="navbar-toggler-icon"></span>
             </button>
@@ -47,7 +49,8 @@
 
 <script>
 import Footer from "@/components/Footer.vue";
-import axios from 'axios';
+//import axios from 'axios';
+import { HTTP } from './http-common';
 export default {
   name: 'App',
   setup() {
@@ -68,7 +71,7 @@ export default {
   },
   methods: {
     logout() {
-      axios.delete('http://127.0.0.1:8000/api/logout', {
+      HTTP.delete('/logout', {
         headers: {
           Authorization: "Bearer " + this.token
         }

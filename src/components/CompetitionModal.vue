@@ -35,7 +35,8 @@
 </template>
 
 <script>
-import axios from "axios";
+//import axios from "axios";
+import { HTTP } from '../http-common';
 export default {
    props: ['competitionId'],
   name: 'CompetitionModal',  
@@ -52,7 +53,7 @@ export default {
       visitor.append('name', this.name);
       visitor.append('phone_number', this.matricule);
       visitor.append('file', this.file);
-      axios.post(`http://127.0.0.1:8000/api/compareFile/1`,
+      HTTP.post(`/compareFile/1`,
         visitor,
         {
           headers: {

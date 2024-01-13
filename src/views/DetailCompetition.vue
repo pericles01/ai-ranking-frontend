@@ -122,7 +122,8 @@
 
 <script>
 //import competModal from "@/components/CompetitionModal.vue";
-import axios from "axios";
+//import axios from "axios";
+import { HTTP } from '../http-common';
 import useVuelidate from '@vuelidate/core';
 import { required, minLength } from '@vuelidate/validators';
 export default {
@@ -182,13 +183,13 @@ export default {
             });
         },
         getCompetitionData(competitionId) {
-            axios.get(`http://127.0.0.1:8000/api/show/${competitionId}`)
+            HTTP.get(`/show/${competitionId}`)
                 .then(response => (this.model.competition = response.data))
                 .catch(error => console.log(error))
         },
 
         getRankingData(competitionId) {
-            axios.get(`http://127.0.0.1:8000/api/ranking/${competitionId}`)
+            HTTP.get(`/ranking/${competitionId}`)
                 .then(response => ( this.rankings = response.data))
                 .catch(error => console.log(error))
         },
@@ -204,7 +205,7 @@ export default {
             formData.append('matricule', this.visitor.matricule);
             formData.append('file', this.selectedFile);
             //console.log(formData);
-            axios.post(`http://127.0.0.1:8000/api/compareFile/${competitionId}`, formData)
+            HTTP.post(`/compareFile/${competitionId}`, formData)
                 .then(() => (this.$router.go({ path: `/Detail/${competitionId}` }), this.$notify.success({
                         title: 'Success',
                         message: 'Your file  added Succesfully!! go to bottom and tcheck your result',

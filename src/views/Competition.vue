@@ -50,7 +50,8 @@
 </template>
 
 <script>
-import axios from "axios";
+//import axios from "axios";
+import { HTTP } from '../http-common';
 
 export default {
     name: 'Competition',
@@ -63,8 +64,8 @@ export default {
         }
     },
     mounted() {
-        axios
-            .get('http://127.0.0.1:8000/api/index')
+        HTTP
+            .get('/index')
             .then(response => (this.competitions = response.data))
             .catch(error => console.log(error))
     },
