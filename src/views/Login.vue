@@ -60,7 +60,8 @@
 </template>
 
 <script>
-import axios from 'axios';
+//import axios from 'axios';
+import { HTTP } from '../http-common';
 import useVuelidate from '@vuelidate/core'
 import { required, email } from '@vuelidate/validators'
 export default {
@@ -100,7 +101,7 @@ export default {
       formData.append('email', this.authuser.email);
       formData.append('password', this.authuser.password);
       console.log(formData);
-      axios.post('http://127.0.0.1:8000/api/login', formData).then(response => (
+      HTTP.post('/login', formData).then(response => (
         localStorage.setItem('token', response.data.token), //store them from response
         this.$router.push({ path: '/Admin'}),
         this.$notify.success({

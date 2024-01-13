@@ -20,7 +20,8 @@
 </template>
 
 <script>
-import axios from "axios";
+//import axios from "axios";
+import { HTTP } from '../http-common';
 export default {
     name: 'DelateModal',
     props: ['id_component'],
@@ -34,7 +35,7 @@ export default {
     methods: {
         delateCompetition() {
             console.log(this.id_component.id);
-            axios.delete('http://127.0.0.1:8000/api/v1/competition/'+ this.id_component.id, {
+            HTTP.delete('/v1/competition/'+ this.id_component.id, {
                 headers: {
                     Authorization: "Bearer " + this.token
                 }

@@ -59,7 +59,8 @@
 import AddCompetModal from "@/components/AddCompetitionModal.vue";
 import DelateModal from "@/components/DelateModal.vue";
 import UpdateModal from "@/components/UpdateModal.vue";
-import axios from "axios";
+//import axios from "axios";
+import { HTTP } from '../http-common';
 
 export default {
     name: 'AdminPage',
@@ -88,8 +89,8 @@ export default {
     },
     methods: {
         getCompetition() {
-            axios
-                .get('http://127.0.0.1:8000/api/v1/competition', {
+            HTTP
+                .get('/v1/competition', {
                     headers: {
                         Authorization: "Bearer " + this.token
                     }
